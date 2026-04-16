@@ -20,14 +20,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Obter mensagem do último commit
+        id: commit_msg
+        run: |
+            MSG=$(git log -1 --pretty=%B)
+            echo "msg<<EOF" >> $GITHUB_OUTPUT
+            echo "$MSG" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Simular teste
         run: |
-            echo "Rodando testes..."
+            MSG="${{ steps.commit_msg.outputs.msg }}"
 
-            MSG="${{ github.event.head_commit.message }}${{ github.event.pull_request.title }}"
+            echo "Mensagem do commit:"
+            echo "$MSG"
 
             if echo "$MSG" | grep -qi "\[fail-ci\]"; then
-            echo "❌ Falha forçada via commit"
+            echo "❌ Falha forçada (commit atual)"
             exit 1
             fi
 
