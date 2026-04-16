@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      should_fail:
+        description: "Forçar falha?"
+        required: true
+        default: "false"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Simular teste
+        run: |
+          echo "Rodando testes..."
+
+          if [ "${{ github.event.inputs.should_fail }}" = "true" ]; then
+            echo "❌ Teste falhou"
+            exit 1
+          else
+            echo "✅ Teste passou"
+          fi
