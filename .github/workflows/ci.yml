@@ -1,6 +1,10 @@
 name: CI
 
 on:
+  pull_request:
+    branches:
+      - main
+
   workflow_dispatch:
     inputs:
       should_fail:
@@ -18,11 +22,13 @@ jobs:
 
       - name: Simular teste
         run: |
-          echo "Rodando testes..."
+            echo "Rodando testes..."
 
-          if [ "${{ github.event.inputs.should_fail }}" = "true" ]; then
-            echo "❌ Teste falhou"
+            MSG="${{ github.event.head_commit.message }}${{ github.event.pull_request.title }}"
+
+            if echo "$MSG" | grep -qi "\[fail-ci\]"; then
+            echo "❌ Falha forçada via commit"
             exit 1
-          else
-            echo "✅ Teste passou"
-          fi
+            fi
+
+            echo "✅ Sucesso"
