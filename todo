@@ -5,4 +5,4 @@ gh api `
   --input protection-rules.json
 
 
-Alterar de merge para rebase
+Alterar de merge para rebase.
