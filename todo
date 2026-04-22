@@ -1,0 +1,8 @@
+gh api `
+  --method PUT `
+  -H "Accept: application/vnd.github+json" `
+  /repos/OWNER/REPO/branches/main/protection `
+  --input protection-rules.json
+
+
+Alterar de merge para rebase
